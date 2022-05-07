@@ -238,6 +238,15 @@ namespace Live2D.Cubism.Core
 
 
                 data.Flags = flags[i];
+
+                // HuaHua.
+#if OPTIMIZE_LIVE2D
+                if (!data.IsVisible)
+                {
+                    continue;
+                }
+#endif
+
                 data.Opacity = opacities[i];
                 data.DrawOrder = drawOrders[i];
                 data.RenderOrder = renderOrders[i];
@@ -249,7 +258,19 @@ namespace Live2D.Cubism.Core
                     continue;
                 }
 
-
+                // HuaHua.
+#if OPTIMIZE_LIVE2D
+                // Copy vertex positions.
+                fixed (Vector3* dataVertexPositions = data.VertexPositions)
+                {
+                    var address = vertexPositions[i].UnmanagedFixedAddress;
+                    for (int v = 0, n = data.VertexPositions.Length; v < n; ++v)
+                    {
+                        dataVertexPositions[v].x = address[(v * 2) + 0];
+                        dataVertexPositions[v].y = address[(v * 2) + 1];
+                    }
+                }
+#else
                 // Copy vertex positions.
                 fixed (Vector3* dataVertexPositions = data.VertexPositions)
                 {
@@ -259,6 +280,7 @@ namespace Live2D.Cubism.Core
                         dataVertexPositions[v].y = vertexPositions[i][(v * 2) + 1];
                     }
                 }
+#endif
             }
 
 
@@ -266,6 +288,6 @@ namespace Live2D.Cubism.Core
             drawables.ResetDynamicFlags();
         }
 
-        #endregion
+#endregion
     }
 }

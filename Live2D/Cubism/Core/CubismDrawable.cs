@@ -147,10 +147,32 @@ namespace Live2D.Cubism.Core
         /// <summary>
         /// Copy of vertex positions.
         /// </summary>
-        public Vector3[] VertexPositions
+        unsafe public Vector3[] VertexPositions
         {
             get
             {
+                // HuaHua.
+#if OPTIMIZE_LIVE2D
+                // Get addresses.
+                var counts = UnmanagedDrawables.VertexCounts;
+                var positions = UnmanagedDrawables.VertexPositions;
+
+
+                // Pull data.
+                var buffer = new Vector3[counts[UnmanagedIndex]];
+
+                var address = positions[UnmanagedIndex].UnmanagedFixedAddress;
+                for (int i = 0, n = buffer.Length; i < n; ++i)
+                {
+                    buffer[i] = new Vector3(
+                        address[(i * 2) + 0],
+                        address[(i * 2) + 1]
+                    );
+                }
+
+
+                return buffer;
+#else
                 // Get addresses.
                 var counts = UnmanagedDrawables.VertexCounts;
                 var positions = UnmanagedDrawables.VertexPositions;
@@ -170,16 +192,39 @@ namespace Live2D.Cubism.Core
 
 
                 return buffer;
+#endif
             }
         }
 
         /// <summary>
         /// Copy of vertex texture coordinates.
         /// </summary>
-        public Vector2[] VertexUvs
+        unsafe public Vector2[] VertexUvs
         {
             get
             {
+                // HuaHua.
+#if OPTIMIZE_LIVE2D
+                // Get addresses.
+                var counts = UnmanagedDrawables.VertexCounts;
+                var uvs = UnmanagedDrawables.VertexUvs;
+
+
+                // Pull data.
+                var buffer = new Vector2[counts[UnmanagedIndex]];
+
+                var address = uvs[UnmanagedIndex].UnmanagedFixedAddress;
+                for (int i = 0, n = buffer.Length; i < n; ++i)
+                {
+                    buffer[i] = new Vector2(
+                        address[(i * 2) + 0],
+                        address[(i * 2) + 1]
+                    );
+                }
+
+
+                return buffer;
+#else
                 // Get addresses.
                 var counts = UnmanagedDrawables.VertexCounts;
                 var uvs = UnmanagedDrawables.VertexUvs;
@@ -199,16 +244,36 @@ namespace Live2D.Cubism.Core
 
 
                 return buffer;
+#endif
             }
         }
 
         /// <summary>
         /// Copy of triangle indices.
         /// </summary>
-        public int[] Indices
+        unsafe public int[] Indices
         {
             get
             {
+                // HuaHua.
+#if OPTIMIZE_LIVE2D
+                // Get addresses.
+                var counts = UnmanagedDrawables.IndexCounts;
+                var indices = UnmanagedDrawables.Indices;
+
+
+                // Pull data.
+                var buffer = new int[counts[UnmanagedIndex]];
+
+                var address = indices[UnmanagedIndex].UnmanagedFixedAddress;
+                for (int i = 0, n = buffer.Length; i < n; ++i)
+                {
+                    buffer[i] = address[i];
+                }
+
+
+                return buffer;
+#else
                 // Get addresses.
                 var counts = UnmanagedDrawables.IndexCounts;
                 var indices = UnmanagedDrawables.Indices;
@@ -225,6 +290,7 @@ namespace Live2D.Cubism.Core
 
 
                 return buffer;
+#endif
             }
         }
 

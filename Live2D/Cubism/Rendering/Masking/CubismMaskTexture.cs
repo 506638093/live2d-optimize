@@ -52,7 +52,7 @@ namespace Live2D.Cubism.Rendering.Masking
                 return handle.Result;
 #endif
 #else
-           get { return Resources.Load<CubismMaskTexture>("Live2D/Cubism/GlobalMaskTexture"); }
+            return Resources.Load<CubismMaskTexture>("Live2D/Cubism/GlobalMaskTexture");
 #endif
             }
         }

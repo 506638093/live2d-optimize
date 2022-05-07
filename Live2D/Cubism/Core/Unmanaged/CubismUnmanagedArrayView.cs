@@ -206,6 +206,8 @@ namespace Live2D.Cubism.Core.Unmanaged
         /// </summary>
         public unsafe bool IsValid { get { return (UnmanagedFixedAddress != (ushort*)0) && (Length > 0); } }
 
+
+
         /// <summary>
         /// Gets element at index.
         /// </summary>
@@ -266,7 +268,12 @@ namespace Live2D.Cubism.Core.Unmanaged
         /// <summary>
         /// Unmanaged buffer address.
         /// </summary>
+        // HuaHua.
+#if OPTIMIZE_LIVE2D
+        public unsafe ushort* UnmanagedFixedAddress { get; set; }
+#else
         private unsafe ushort* UnmanagedFixedAddress { get; set; }
+#endif
 
         #region Ctors
 
@@ -622,7 +629,12 @@ namespace Live2D.Cubism.Core.Unmanaged
         /// <summary>
         /// Unmanaged buffer address.
         /// </summary>
+        /// HuaHua.
+#if OPTIMIZE_LIVE2D
+        public unsafe float* UnmanagedFixedAddress { get; set; }
+#else
         private unsafe float* UnmanagedFixedAddress { get; set; }
+#endif
 
         #region Ctors
 
@@ -648,7 +660,7 @@ namespace Live2D.Cubism.Core.Unmanaged
             Length = length;
         }
 
-        #endregion
+#endregion
 
         /// <summary>
         /// Reads data.

@@ -710,30 +710,18 @@ namespace Live2D.Cubism.Rendering
                 Meshes = new Mesh[1];
             }
 
-            Mesh mesh = MeshFilter.sharedMesh;
+            // Create mesh for attached drawable.
+            var drawable = GetComponent<CubismDrawable>();
 
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
+            var mesh = new Mesh
             {
-                mesh = null;
-            }
-#endif
+                name = drawable.name,
+                vertices = drawable.VertexPositions,
+                uv = drawable.VertexUvs,
+                triangles = drawable.Indices
+            };
 
-            if (mesh == null)
-            {
-                // Create mesh for attached drawable.
-                var drawable = GetComponent<CubismDrawable>();
-
-                mesh = new Mesh
-                {
-                    name = drawable.name,
-                    vertices = drawable.VertexPositions,
-                    uv = drawable.VertexUvs,
-                    triangles = drawable.Indices
-                };
-
-                MeshFilter.sharedMesh = mesh;
-            }
+            MeshFilter.sharedMesh = mesh;
 
             mesh.MarkDynamic();
             mesh.RecalculateBounds();
@@ -787,7 +775,18 @@ namespace Live2D.Cubism.Rendering
         {
             var mesh = Mesh;
 
+            // HuaHua.
+#if OPTIMIZE_LIVE2D
+            var vc = new Color[mesh.vertexCount];
 
+            var col = new Color(Color.r, Color.g, Color.b, Color.a * Opacity);
+            for (var i = 0; i < vc.Length; ++i)
+            {
+                vc[i] = col;
+            }
+
+            VertexColors = vc;
+#else
             VertexColors = new Color[mesh.vertexCount];
 
 
@@ -796,6 +795,7 @@ namespace Live2D.Cubism.Rendering
                 VertexColors[i] = Color;
                 VertexColors[i].a *= Opacity;
             }
+#endif
         }
 
         /// <summary>
