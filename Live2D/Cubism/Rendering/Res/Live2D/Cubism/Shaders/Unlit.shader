@@ -27,6 +27,14 @@ Shader "Live2D Cubism/Unlit"
 
         // 用于 DoTween 做 Live2D 角色透明渐变
         _Color("Color", Color) = (1, 1, 1, 1)
+
+
+        // Mask settings.
+        [Toggle(CUBISM_MASK_ON)] cubism_MaskOn("Mask?", Int) = 0
+        [Toggle(CUBISM_INVERT_ON)] cubism_InvertOn("Inverted?", Int) = 0
+        [PerRendererData] cubism_MaskTexture("cubism_Internal", 2D) = "white" {}
+        [PerRendererData] cubism_MaskTile("cubism_Internal", Vector) = (0, 0, 0, 0)
+        [PerRendererData] cubism_MaskTransform("cubism_Internal", Vector) = (0, 0, 0, 0)
     }
     SubShader
     {
@@ -49,6 +57,8 @@ Shader "Live2D Cubism/Unlit"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile CUBISM_MASK_ON CUBISM_MASK_OFF CUBISM_INVERT_ON
+
 
             #include "UnityCG.cginc"
             #include "CubismCG.cginc"
