@@ -239,13 +239,13 @@ namespace Live2D.Cubism.Core
 
                 data.Flags = flags[i];
 
-                // HuaHua.
-#if OPTIMIZE_LIVE2D
-                if (!data.IsVisible)
-                {
-                    continue;
-                }
-#endif
+//                // HuaHua.
+//#if OPTIMIZE_LIVE2D
+//                if (!data.IsVisible)
+//                {
+//                    continue;
+//                }
+//#endif
 
                 data.Opacity = opacities[i];
                 data.DrawOrder = drawOrders[i];

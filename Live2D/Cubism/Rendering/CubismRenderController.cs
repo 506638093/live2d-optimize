@@ -596,15 +596,15 @@ namespace Live2D.Cubism.Rendering
                     swapMeshes = true;
                 }
 
-                // HuaHua.
-                // Since it's hidden, why need update other data.
-#if OPTIMIZE_LIVE2D
-                if (!data[i].IsVisible)
-                {
-                    renderers[i].SwapMeshes();
-                    continue;
-                }
-#endif
+//                // HuaHua.
+//                // Since it's hidden, why need update other data.
+//#if OPTIMIZE_LIVE2D
+//                if (!data[i].IsVisible)
+//                {
+//                    renderers[i].SwapMeshes();
+//                    continue;
+//                }
+//#endif
 
 
                 // Update render order.
